@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def homepage(request):
-    return HttpResponse("Agrosat Backend Apis!")
+    return HttpResponse("Mmatatu Backend Apis!")
 
 
 @permission_classes([AllowAny])
