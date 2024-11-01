@@ -4,220 +4,20 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserSerializer
+#from .serializers import UserSerializer
 import json
 from rest_framework.views import APIView
-from Backend.models import smoke,batt,temperature,soilph,soilprecipitation
-from Backend.models import GSCoordinates,Images
+#from Backend.models import smoke,batt,temperature,soilph,soilprecipitation
+#from Backend.models import GSCoordinates,Images
 from django.views.decorators.csrf import csrf_exempt 
 
 
 def homepage(request):
     return HttpResponse("Agrosat Backend Apis!")
 
-@permission_classes([AllowAny])
-class imagesapi(APIView):
-    def post(self, request, *args, **kwargs):
-        try:
-            # Check if request.data is a dictionary (it will be if the content is JSON)
-            if isinstance(request.data, dict) and '_content' not in request.data:
-                data = request.data
-                print("Parsed as JSON:", data)
-            else:
-                # Convert QueryDict to a dictionary
-                data = dict(request.data)
-                print("QueryDict Data:", data)
-                
-                # Extract JSON content from '_content' key
-                data_json = data.get('_content', '')  # Assuming '_content' exists in QueryDict
-                print(data_json)
-                data_json = data_json[0].replace("\r\n", "")  # Clean up new lines if any
-                data = json.loads(data_json)  # Convert JSON string to a Python dictionary
-                print("Extracted Data:", data)
-
-            # Extract image
-            image= data.get('image')
-            image_name = image.split('/')[0]
-            image = image.split('/', 1) 
-            image=image[1]
-            # Simple validation check
-            if image is None:
-                return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
-            
-            image_data = Images(
-                image=image,
-                image_name=image_name   
-            )
-            image_data.save()
-           
-            return Response({"message": "Success", "data": image}, status=status.HTTP_200_OK)
-      
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @permission_classes([AllowAny])
-class temperatureapi(APIView):
-    def post(self, request, *args, **kwargs):
-        try:
-            # Check if request.data is a dictionary (it will be if the content is JSON)
-            if isinstance(request.data, dict) and '_content' not in request.data:
-                data = request.data
-                print("Parsed as JSON:", data)
-            else:
-                # Convert QueryDict to a dictionary
-                data = dict(request.data)
-                print("QueryDict Data:", data)
-                
-                # Extract JSON content from '_content' key
-                data_json = data.get('_content', '')  # Assuming '_content' exists in QueryDict
-                print(data_json)
-                data_json = data_json[0].replace("\r\n", "")  # Clean up new lines if any
-                data = json.loads(data_json)  # Convert JSON string to a Python dictionary
-                print("Extracted Data:", data)
-
-            # Extract temperature and humidity
-            temperature_value= data.get('temperature')
-            print(temperature)
-
-            # Simple validation check
-            if temperature_value is None:
-                return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
-            
-            temperature_data = temperature(
-                temperature=temperature_value
-                
-                
-            )
-            temperature_data.save()
-           
-            return Response({"message": "Success", "data": data}, status=status.HTTP_200_OK)
-
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-@permission_classes([AllowAny])
-class humidityapi(APIView):
-    def post(self, request, *args, **kwargs):
-        try:
-            # Check if request.data is a dictionary (it will be if the content is JSON)
-            if isinstance(request.data, dict) and '_content' not in request.data:
-                data = request.data
-                print("Parsed as JSON:", data)
-            else:
-                # Convert QueryDict to a dictionary
-                data = dict(request.data)
-                print("QueryDict Data:", data)
-                
-                # Extract JSON content from '_content' key
-                data_json = data.get('_content', '')  # Assuming '_content' exists in QueryDict
-                print(data_json)
-                data_json = data_json[0].replace("\r\n", "")  # Clean up new lines if any
-                data = json.loads(data_json)  # Convert JSON string to a Python dictionary
-                print("Extracted Data:", data)
-
-            # Extract temperature and humidity
-            humidity= data.get('humidity')
-            print(humidity)
-
-            # Simple validation check
-            if humidity is None:
-                return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
-            
-            humidity_data = humidity(
-                humidity=humidity
-                
-                
-            )
-            humidity_data.save()
-           
-            return Response({"message": "Success", "data": data}, status=status.HTTP_200_OK)
-        
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-@permission_classes([AllowAny])
-class batteryapi(APIView):
-    def post(self, request, *args, **kwargs):
-        try:
-            # Check if request.data is a dictionary (it will be if the content is JSON)
-            if isinstance(request.data, dict) and '_content' not in request.data:
-                data = request.data
-                print("Parsed as JSON:", data)
-            else:
-                # Convert QueryDict to a dictionary
-                data = dict(request.data)
-                print("QueryDict Data:", data)
-                
-                # Extract JSON content from '_content' key
-                data_json = data.get('_content', '')  # Assuming '_content' exists in QueryDict
-                print(data_json)
-                data_json = data_json[0].replace("\r\n", "")  # Clean up new lines if any
-                data = json.loads(data_json)  # Convert JSON string to a Python dictionary
-                print("Extracted Data:", data)
-
-            # Extract temperature and humidity
-            batt= data.get('batt')
-            print(batt)
-
-            # Simple validation check
-            if batt is None:
-                return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
-            
-            batt_data = batt(
-                batt=batt
-                
-                
-            )
-            batt_data.save()
-           
-            return Response({"message": "Success", "data": data}, status=status.HTTP_200_OK)
-        
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-@permission_classes([AllowAny])
-class smokeapi(APIView):
-    def post(self, request, *args, **kwargs):
-        try:
-            # Check if request.data is a dictionary (it will be if the content is JSON)
-            if isinstance(request.data, dict) and '_content' not in request.data:
-                data = request.data
-                print("Parsed as JSON:", data)
-            else:
-                # Convert QueryDict to a dictionary
-                data = dict(request.data)
-                print("QueryDict Data:", data)
-                
-                # Extract JSON content from '_content' key
-                data_json = data.get('_content', '')  # Assuming '_content' exists in QueryDict
-                print(data_json)
-                data_json = data_json[0].replace("\r\n", "")  # Clean up new lines if any
-                data = json.loads(data_json)  # Convert JSON string to a Python dictionary
-                print("Extracted Data:", data)
-
-            # Extract temperature and humidity
-            smoke= data.get('smoke')
-            print(batt)
-
-            # Simple validation check
-            if smoke is None:
-                return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
-            
-            smoke_data = smoke(
-                smoke=smoke
-                
-                
-            )
-            smoke_data.save()
-           
-            return Response({"message": "Success", "data": data}, status=status.HTTP_200_OK)
-        
-        except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-
-@permission_classes([AllowAny])
-class soilphapi(APIView):
+class driverapi(APIView):
     def post(self, request, *args, **kwargs):
         try:
             # Check if request.data is a dictionary (it will be if the content is JSON)
@@ -258,7 +58,7 @@ class soilphapi(APIView):
 
 
 @permission_classes([AllowAny])
-class locationapi(APIView):
+class passapi(APIView):
     def post(self, request, *args, **kwargs):
         try:
             # Check if request.data is a dictionary (it will be if the content is JSON)
