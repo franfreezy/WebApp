@@ -1,6 +1,6 @@
 const Login = () => {
   return (
-    <section class="min-h-screen w-full relative">
+    <section class="h-screen w-screen relative">
       <img src="/Assets/bus1.jpg" alt="" class="object-cover h-full w-full" />
       <div class="absolute w-full min-h-full top-0 left-0 z-10 bg-gradient-to-r from-slate-900 to-slate-700/90">
         <div class="sm:max-w-md xl:p-0 md:py-10 h-full flex items-center md:max-w-screen-xl md:mx-auto">
