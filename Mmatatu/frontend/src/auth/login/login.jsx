@@ -1,19 +1,23 @@
 const Login = () => {
   return (
-    <section class="h-screen w-screen relative">
-      <img src="/Assets/bus1.jpg" alt="" class="object-cover h-full w-full" />
-      <div class="absolute w-full min-h-full top-0 left-0 z-10 bg-gradient-to-r from-slate-900 to-slate-700/90">
-        <div class="sm:max-w-md xl:p-0 md:py-10 h-full flex items-center md:max-w-screen-xl md:mx-auto">
-          <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white">
+    <section className="h-screen w-screen relative">
+      <img
+        src="/Assets/bus1.jpg"
+        alt=""
+        className="object-cover h-full w-full fixed top-0 left-0"
+      />
+      <div className="absolute w-full min-h-full top-0 left-0 z-10 bg-gradient-to-r from-slate-900 to-slate-700/90">
+        <div className="sm:max-w-md xl:p-0 md:py-10 h-full flex items-center md:max-w-screen-xl md:mx-auto">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white">
               Sign in to your account
-              <span class="text-blue-500 text-6xl">.</span>
+              <span className="text-blue-500 text-6xl">.</span>
             </h1>
-            <form class="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label
-                  for="email"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Your email
                 </label>
@@ -21,15 +25,15 @@ const Login = () => {
                   type="email"
                   name="email"
                   id="email"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="name@gmail.com"
                   required=""
                 />
               </div>
               <div>
                 <label
-                  for="password"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Password
                 </label>
@@ -38,25 +42,25 @@ const Login = () => {
                   name="password"
                   id="password"
                   placeholder="••••••••"
-                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required=""
                 />
               </div>
-              <div class="flex items-center justify-between">
-                <div class="flex items-start">
-                  <div class="flex items-center h-5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
                     <input
                       id="remember"
                       aria-describedby="remember"
                       type="checkbox"
-                      class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
                       required=""
                     />
                   </div>
-                  <div class="ml-3 text-sm">
+                  <div className="ml-3 text-sm">
                     <label
-                      for="remember"
-                      class="text-gray-500 dark:text-gray-300"
+                      htmlFor="remember"
+                      className="text-gray-500 dark:text-gray-300"
                     >
                       Remember me
                     </label>
@@ -64,27 +68,27 @@ const Login = () => {
                 </div>
                 <a
                   href="#"
-                  class="text-sm font-medium text-white hover:underline"
+                  className="text-sm font-medium text-white hover:underline"
                 >
                   Forgot password?
                 </a>
               </div>
               <button
                 type="submit"
-                class="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 Sign in
               </button>
-              <div class="inline-flex items-center justify-center w-full relative">
-                <hr class="w-64 h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
-                <span class="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">
+              <div className="inline-flex items-center justify-center w-full relative">
+                <hr className="w-64 h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
+                <span className="absolute px-3 font-medium text-gray-900 -translate-x-1/2 bg-white left-1/2 dark:text-white dark:bg-gray-900">
                   or
                 </span>
               </div>
-              <div className="grid grid-cols-2">
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   type="button"
-                  class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
+                  className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700"
                 >
                   <svg
                     class="w-4 h-4 me-2"
@@ -121,11 +125,12 @@ const Login = () => {
                       </clipPath>
                     </defs>
                   </svg>
+                  {/* Google Icon */}
                   Sign in with Google
                 </button>
                 <button
                   type="button"
-                  class="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 me-2 mb-2"
+                  className="text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700"
                 >
                   <svg
                     class="w-4 h-4 me-2"
@@ -140,16 +145,18 @@ const Login = () => {
                       clip-rule="evenodd"
                     />
                   </svg>
+                  {/* Twitter Icon */}
                   Sign in with Twitter
                 </button>
               </div>
-              <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+              <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don't have an account yet?
                 <a
                   href="/register"
-                  class="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                  className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 >
-                  Sign up
+                  {" "}
+                  Sign up here
                 </a>
               </p>
             </form>
