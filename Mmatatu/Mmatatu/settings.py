@@ -4,24 +4,14 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 from datetime import timedelta
-
-
 load_dotenv()
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-print(BASE_DIR)
-
 SECRET_KEY = os.environ.get('SECRET_KEY')  
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG') 
-
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://mmatatu.onrender.com'
 ]
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
