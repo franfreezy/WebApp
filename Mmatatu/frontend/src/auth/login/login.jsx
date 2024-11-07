@@ -1,4 +1,69 @@
+import Nav from "../nav";
+import React, { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+
 const Login = () => {
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
+
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log('Form Submitted');
+
+        try {
+            console.log('Sending Request');
+            const response = await fetch('https://agroxsat.onrender.com/backend/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            });
+
+            console.log('Response Status:', response.status);
+
+            const contentType = response.headers.get('Content-Type');
+            const responseBody = await response.json();
+
+            if (response.ok) {
+              console.log("Access Token:", localStorage.getItem('accessToken'));
+              console.log("Username from localStorage:", localStorage.getItem('username'));
+              console.log("Email from localStorage:", localStorage.getItem('email'));
+                const { access, refresh, user } = responseBody;
+                console.log(responseBody);
+                localStorage.setItem('accessToken', access);
+                localStorage.setItem('refreshToken', refresh);
+                localStorage.setItem('username', user.username); 
+                localStorage.setItem('email', user.email);  
+                navigate('/dashboard');
+            }else {
+                let errorMessage = 'Error logging in';
+
+                if (contentType && contentType.includes('application/json')) {
+                    const result = JSON.parse(responseBody);
+                    errorMessage = result.error || errorMessage;
+                }
+
+                setError(errorMessage);
+            }
+        } catch (err) {
+            console.error('Fetch Error:', err);
+            setError('Error logging in');
+        }
+    };
   return (
     <section className="h-screen w-screen relative">
       <img

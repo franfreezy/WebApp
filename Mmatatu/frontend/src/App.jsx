@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./middleware";
+import ProtectedRoute from "./@protect/ProtectedRoute";
 import Login from "./auth/login/login";
 import Register from "./auth/register/register";
 import Dashboard from "./dashboard/page";
@@ -11,7 +11,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
 
         {/* Protect these routes */}
         {/* <Route
