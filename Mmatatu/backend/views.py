@@ -69,11 +69,11 @@ def login(request):
 
         
         print(data)
-        username = data.get('username')
+        email = data.get('email')
         password = data.get('password')
         
         # Authenticate user
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=email, password=password)
         
         if user is not None:
             # Generate refresh and access tokens
@@ -84,7 +84,6 @@ def login(request):
                 'refresh': str(refresh),
                 'access': str(access),
                 'user': {
-                    'username': user.username,
                     'email': user.email,
                 }
             }, status=status.HTTP_200_OK)
