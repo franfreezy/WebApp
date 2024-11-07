@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Nav from "../nav";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
