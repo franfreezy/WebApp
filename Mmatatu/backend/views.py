@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 import json
 from django.shortcuts import render
 from .models import Images
-from .forms import CoordinateForm
+
 from geopy.distance import geodesic
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.views import APIView
@@ -18,31 +18,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 
-#def sensor_data_view(request):
-#    sensor_data = SensorData.objects.all()  # Fetch all records from the database
-#    return render(request, 'sensor_data.html', {'sensor_data': sensor_data})
 
-def image_data_view(request):
-    image_data = Images.objects.all()  # Fetch all records from the database
-    return render(request, 'image_data.html', {'image_data': image_data})
-
-def calculate_distance(request):
-    distance = None
-    if request.method == 'POST':
-        form = CoordinateForm(request.POST)
-        if form.is_valid():
-            lat1 = form.cleaned_data['latitude']
-            lon1 = form.cleaned_data['longitude']
-            lat2 =-1.1017657065964066
-            lon2 = 37.016449722103474
-            
-            coords_1 = (lat1, lon1)
-            coords_2 = (lat2, lon2)
-            distance = geodesic(coords_1, coords_2).kilometers
-    else:
-        form = CoordinateForm()
-
-    return render(request, 'calculate_distance.html', {'form': form, 'distance': distance})
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
