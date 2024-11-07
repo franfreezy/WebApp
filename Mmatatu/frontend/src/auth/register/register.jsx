@@ -1,4 +1,67 @@
-const Register = () => {
+import React, { useState } from "react";
+import Nav from "../nav";
+import { useNavigate } from "react-router-dom";
+
+function Register() {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setErrorMessage("");
+
+    if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    const data = {
+      username,
+      email,
+      password,
+    };
+
+    try {
+      const response = await fetch(
+        "https://agroxsat.onrender.com/backend/register/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      const result = await response.json();
+      console.log("Response Status:", response.status);
+      console.log("Response Body:", result); // Log the full response
+
+      if (response.ok) {
+        alert("Registration successful");
+        navigate("/");
+      } else {
+        // Handle errors returned from the backend
+        if (result.error) {
+          setErrorMessage(result.error);
+        } else if (result.message) {
+          setErrorMessage(result.message);
+        } else if (result.detail) {
+          setErrorMessage(result.detail);
+        } else {
+          setErrorMessage("Registration failed. Please try again.");
+        }
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred. Please try again.");
+    }
+  };
+
   return (
     <section class=" min-h-screen w-full relative">
       <img src="/Assets/bus1.jpg" alt="" class="object-cover h-full w-full" />
