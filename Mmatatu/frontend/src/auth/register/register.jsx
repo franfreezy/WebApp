@@ -70,7 +70,7 @@ function Register() {
             <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl dark:text-white">
               Create an account <span class="text-blue-500 text-6xl">.</span>
             </h1>
-            <form class="space-y-4 md:space-y-6" action={handleSubmit}>
+            <form class="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   for="email"
