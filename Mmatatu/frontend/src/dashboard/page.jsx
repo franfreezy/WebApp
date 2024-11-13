@@ -6,6 +6,7 @@ import DashboardHome from "./screens/DashboardHome";
 import BusTrackingMap from "./screens/BusTrackingMap";
 import RevenueCollectionPage from "./screens/RevenueCollectionPage ";
 import PassengerInformationPage from "./screens/PassengerInformationPage";
+import BusManagementPage from "./screens/BusManagementPage ";
 
 function Dashboard() {
   return (
@@ -20,7 +21,7 @@ function Dashboard() {
         {/* Content Area */}
         <div className="p-6 flex-1 overflow-auto">
           <Routes>
-            <Route path="/" element={<PassengerInformationPage />} />
+            <Route path="/" element={<BusManagementPage />} />
           </Routes>
         </div>
       </div>

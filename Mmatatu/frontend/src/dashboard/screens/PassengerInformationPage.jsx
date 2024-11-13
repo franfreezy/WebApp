@@ -73,7 +73,7 @@ const PassengerInformationPage = () => {
       </h2>
 
       {/* Bus Selection (For Real-Time Count) */}
-      <div className="mt-12">
+      <div className="my-12">
         <h3 className="text-2xl font-semibold mb-4">
           Select Bus for Real-Time Count
         </h3>
