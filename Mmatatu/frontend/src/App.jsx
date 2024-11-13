@@ -8,16 +8,17 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        
 
         {/* Protect these routes */}
-        { <Route
-          path="/dashboard"
-          element={<ProtectedRoute element={<Dashboard />} />}
-        /> }
+        {
+          <Route
+            path="/dashboardd"
+            element={<ProtectedRoute element={<Dashboard />} />}
+          />
+        }
       </Routes>
     </Router>
   );
