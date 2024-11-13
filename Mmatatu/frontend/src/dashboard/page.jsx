@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import Sidebar from "./components/sidebar";
 import TopBar from "./components/topbar";
 import DashboardHome from "./screens/DashboardHome";
+import BusTrackingMap from "./screens/BusTrackingMap";
+import RevenueCollectionPage from "./screens/RevenueCollectionPage ";
 
 function Dashboard() {
   return (
@@ -17,7 +19,7 @@ function Dashboard() {
         {/* Content Area */}
         <div className="p-6 flex-1 overflow-auto">
           <Routes>
-            <Route path="/" element={<DashboardHome />} />
+            <Route path="/" element={<RevenueCollectionPage />} />
           </Routes>
         </div>
       </div>
