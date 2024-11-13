@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
@@ -19,50 +18,47 @@ const Login = () => {
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('Form Submitted');
-
-        try {
-            console.log('Sending Request');
-            const response = await fetch('https://matatuback.onrender.com/backend/login/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
-
-            console.log('Response Status:', response.status);
-
-            const contentType = response.headers.get('Content-Type');
-            const responseBody = await response.json();
-
-            if (response.ok) {
-              console.log("Access Token:", localStorage.getItem('accessToken'));
-              console.log("Username from localStorage:", localStorage.getItem('username'));
-              console.log("Email from localStorage:", localStorage.getItem('email'));
-                const { access, refresh, user } = responseBody;
-                console.log(responseBody);
-                localStorage.setItem('accessToken', access);
-                localStorage.setItem('refreshToken', refresh);
-                localStorage.setItem('username', user.username); 
-                localStorage.setItem('email', user.email);  
-                navigate('/dashboard');
-            }else {
-                let errorMessage = 'Error logging in';
-
-                if (contentType && contentType.includes('application/json')) {
-                    const result = JSON.parse(responseBody);
-                    errorMessage = result.error || errorMessage;
-                }
-
-                setError(errorMessage);
-            }
-        } catch (err) {
-            console.error('Fetch Error:', err);
-            setError('Error logging in');
-        }
-    };
+      e.preventDefault();
+  
+      try {
+          const response = await fetch('https://matatuback.onrender.com/backend/login/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData)
+          });
+  
+          const contentType = response.headers.get('Content-Type');
+          console.log('Response Status:', response.status);
+  
+          if (response.ok) {
+              const responseBody = await response.json();
+              const { access, refresh, user } = responseBody;
+              
+              localStorage.setItem('accessToken', access);
+              localStorage.setItem('refreshToken', refresh);
+              localStorage.setItem('email', user.email);
+              
+              navigate('/dashboard');
+          } else {
+              let errorMessage = 'Error logging in';
+  
+              if (contentType && contentType.includes('application/json')) {
+                  const result = await response.json();
+                  errorMessage = result.error || errorMessage;
+              } else {
+                  console.log("Non-JSON error response:", await response.text());
+                  errorMessage = 'Unable to log in, please check your credentials.';
+              }
+  
+              setError(errorMessage);
+          }
+      } catch (err) {
+          console.error('Fetch Error:', err);
+          setError('Network error. Please try again.');
+      }
+  };
   return (
     <section className="h-screen w-screen relative">
       <img
