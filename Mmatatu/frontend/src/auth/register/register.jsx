@@ -79,7 +79,7 @@ function Register() {
                   Your Username
                 </label>
                 <input
-                  type="email"
+                  type="text"
                   name="username"
                   id="username"
                   value={username}
