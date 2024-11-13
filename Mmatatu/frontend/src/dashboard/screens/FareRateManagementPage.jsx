@@ -67,7 +67,7 @@ const FareRateManagementPage = () => {
   };
 
   return (
-    <div className="p-8 bg-gradient-to-r from-blue-500 to-indigo-600 text-white min-h-screen">
+    <div className="p-8 bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
       <h2 className="text-4xl font-bold text-center mb-8 text-shadow-md">
         Fare Rate Management
       </h2>
