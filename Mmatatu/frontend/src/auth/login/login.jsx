@@ -1,68 +1,71 @@
-import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: ''
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
+  };
 
-    const [error, setError] = useState('');
-    const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("Form Submitted");
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('Form Submitted');
-
-        try {
-            console.log('Sending Request');
-            const response = await fetch('https://matatuback.onrender.com/backend/login/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
-
-            console.log('Response Status:', response.status);
-
-            const contentType = response.headers.get('Content-Type');
-            const responseBody = await response.json();
-
-            if (response.ok) {
-              console.log("Access Token:", localStorage.getItem('accessToken'));
-              
-              console.log("Email from localStorage:", localStorage.getItem('email'));
-                const { access, refresh, user } = responseBody;
-                console.log(responseBody);
-                localStorage.setItem('accessToken', access);
-                localStorage.setItem('refreshToken', refresh);
-                
-                localStorage.setItem('email', user.email);  
-                navigate('/dashboard');
-            }else {
-                let errorMessage = 'Error logging in';
-
-                if (contentType && contentType.includes('application/json')) {
-                    const result = JSON.parse(responseBody);
-                    errorMessage = result.error || errorMessage;
-                }
-
-                setError(errorMessage);
-            }
-        } catch (err) {
-            console.error('Fetch Error:', err);
-            setError('Error logging in');
+    try {
+      console.log("Sending Request");
+      const response = await fetch(
+        "https://matatuback.onrender.com/backend/login/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
         }
-    };
+      );
+
+      console.log("Response Status:", response.status);
+
+      const contentType = response.headers.get("Content-Type");
+      const responseBody = await response.json();
+
+      if (response.ok) {
+        console.log("Access Token:", localStorage.getItem("accessToken"));
+
+        console.log("Email from localStorage:", localStorage.getItem("email"));
+        const { access, refresh, user } = responseBody;
+        console.log(responseBody);
+        localStorage.setItem("accessToken", access);
+        localStorage.setItem("refreshToken", refresh);
+
+        localStorage.setItem("email", user.email);
+        navigate("/dashboard");
+      } else {
+        let errorMessage = "Error logging in";
+
+        if (contentType && contentType.includes("application/json")) {
+          const result = JSON.parse(responseBody);
+          errorMessage = result.error || errorMessage;
+        }
+
+        setError(errorMessage);
+      }
+    } catch (err) {
+      console.error("Fetch Error:", err);
+      setError("Error logging in");
+    }
+  };
   return (
     <section className="h-screen w-screen relative">
       <img
@@ -80,20 +83,19 @@ const Login = () => {
             <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
-                  htmlFor="email"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  for="username"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Your email
+                  Your Username
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@gmail.com"
+                  type="username"
+                  name="username"
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="John Doe"
                   required=""
                 />
               </div>
