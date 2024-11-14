@@ -37,10 +37,10 @@ function App() {
          }
        />
        <Route
-          path="/dashboard"
+          path="/fare"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <FareRateManagementPage />
             </ProtectedRoute>
           }
         />
