@@ -28,14 +28,7 @@ function App() {
            </ProtectedRoute>
          }
        />
-       <Route
-         path="/dashboard"
-         element={
-           <ProtectedRoute>
-             <BusTrackingMap />
-           </ProtectedRoute>
-         }
-       />
+      
        <Route
          path="/buses"
          element={
