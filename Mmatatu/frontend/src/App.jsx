@@ -29,38 +29,7 @@ function App() {
          }
        />
       
-       <Route
-         path="/buses"
-         element={
-           <ProtectedRoute>
-             <BusManagementPage/>
-           </ProtectedRoute>
-         }
-       />
-       <Route
-         path="/revenue"
-         element={
-           <ProtectedRoute>
-             <RevenueCollectionPage />
-           </ProtectedRoute>
-         }
-       />
-       <Route
-          path="/fare"
-          element={
-            <ProtectedRoute>
-              <FareRateManagementPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/passengers"
-          element={
-            <ProtectedRoute>
-              <PassengerInformationPage />
-            </ProtectedRoute>
-          }
-        />
+       
       </Routes>
     </Router>
   );
