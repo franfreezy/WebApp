@@ -69,11 +69,11 @@ def login(request):
 
         
         print(data)
-        email = data.get('email')
+        username = data.get('username')
         password = data.get('password')
         
         # Authenticate user
-        user = authenticate(email=email, password=password)
+        user = authenticate(username=username, password=password)
         
         if user is not None:
             # Generate refresh and access tokens
