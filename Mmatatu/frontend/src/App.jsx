@@ -3,11 +3,11 @@ import ProtectedRoute from "./@protect/ProtectedRoute";
 import Login from "./auth/login/login";
 import Register from "./auth/register/register";
 import Dashboard from "./dashboard/page";
-import BusManagementPage from "./dashboard/screens/BusManagementPage"
-import BusTrackingMap from "./dashboard/screens/BusTrackingMap"
-import FareRateManagementPage from "./dashboard/screens/FareRateManagementPage"
-import PassengerInformationPage from "./dashboard/screens/PassengerInformationPage"
-import RevenueCollectionPage from "./dashboard/screens/RevenueCollectionPage"
+import BusManagementPage from "./dashboard/screens/BusManagementPage";
+import BusTrackingMap from "./dashboard/screens/BusTrackingMap";
+import FareRateManagementPage from "./dashboard/screens/FareRateManagementPage";
+import PassengerInformationPage from "./dashboard/screens/PassengerInformationPage";
+import RevenueCollectionPage from "./dashboard/screens/RevenueCollectionPage";
 
 
 function App() {
