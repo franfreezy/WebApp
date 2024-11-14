@@ -29,6 +29,22 @@ function App() {
          }
        />
        <Route
+         path="/dashboard"
+         element={
+           <ProtectedRoute>
+             <BusTrackingMap />
+           </ProtectedRoute>
+         }
+       />
+       <Route
+         path="/buses"
+         element={
+           <ProtectedRoute>
+             <BusManagementPage/>
+           </ProtectedRoute>
+         }
+       />
+       <Route
          path="/revenue"
          element={
            <ProtectedRoute>
