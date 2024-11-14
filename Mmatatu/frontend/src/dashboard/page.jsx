@@ -4,9 +4,9 @@ import Sidebar from "./components/sidebar";
 import TopBar from "./components/topbar";
 import DashboardHome from "./screens/DashboardHome";
 import BusTrackingMap from "./screens/BusTrackingMap";
-import RevenueCollectionPage from "./screens/RevenueCollectionPage ";
+import RevenueCollectionPage from "./screens/RevenueCollectionPage";
 import PassengerInformationPage from "./screens/PassengerInformationPage";
-import BusManagementPage from "./screens/BusManagementPage ";
+import BusManagementPage from "./screens/BusManagementPage";
 import FareRateManagementPage from "./screens/FareRateManagementPage";
 
 function Dashboard() {
