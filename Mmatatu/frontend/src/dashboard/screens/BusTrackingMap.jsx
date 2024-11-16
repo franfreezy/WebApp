@@ -4,7 +4,7 @@ import * as turf from "@turf/turf";
 import "mapbox-gl/dist/mapbox-gl.css";
 
 // Replace with your actual Mapbox token
-mapboxgl.accessToken = import.meta.env.REACT_APP_MAPBOX_API_KEY;
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
 const BusTrackingMap = () => {
   const [busData, setBusData] = useState([]);
