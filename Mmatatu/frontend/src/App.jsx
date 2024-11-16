@@ -4,12 +4,6 @@ import Login from "./auth/login/login";
 import Register from "./auth/register/register";
 import Dashboard from "./dashboard/page";
 
-import BusTrackingMap from "./dashboard/screens/BusTrackingMap";
-import FareRateManagementPage from "./dashboard/screens/FareRateManagementPage";
-import PassengerInformationPage from "./dashboard/screens/PassengerInformationPage";
-import RevenueCollectionPage from "./dashboard/screens/RevenueCollectionPage";
-import BusManagementPage from "./dashboard/screens/BusManagementPage";
-
 function App() {
   return (
     <Router>
@@ -19,17 +13,12 @@ function App() {
         <Route path="/register" element={<Register />} />
 
         {/* Protect these routes */}
-        
-         <Route
-         path="/dashboard"
-         element={
-           <ProtectedRoute>
-             <Dashboard />
-           </ProtectedRoute>
-         }
-       />
-      
-       
+        {
+          <Route
+            path="/dashboard"
+            element={<ProtectedRoute element={<Dashboard />} />}
+          />
+        }
       </Routes>
     </Router>
   );
