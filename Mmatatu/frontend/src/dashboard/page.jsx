@@ -1,13 +1,7 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
 import Sidebar from "./components/sidebar";
 import TopBar from "./components/topbar";
-import DashboardHome from "./screens/DashboardHome";
-import BusTrackingMap from "./screens/BusTrackingMap";
-import RevenueCollectionPage from "./screens/RevenueCollectionPage";
-import PassengerInformationPage from "./screens/PassengerInformationPage";
-import BusManagementPage from "./screens/BusManagementPage";
-import FareRateManagementPage from "./screens/FareRateManagementPage";
+import { Outlet } from "react-router-dom";
 
 function Dashboard() {
   return (
@@ -21,9 +15,7 @@ function Dashboard() {
 
         {/* Content Area */}
         <div className="p-6 flex-1 overflow-auto">
-          <Routes>
-            <Route path="/fare" element={<FareRateManagementPage />} />
-          </Routes>
+          <Outlet />
         </div>
       </div>
     </div>
