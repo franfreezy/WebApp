@@ -145,7 +145,7 @@ const RevenueCollectionPage = () => {
       {/* Revenue Summary */}
       <div style={{ marginBottom: "20px" }}>
         <h3>Total Revenue</h3>
-        <p>{`$${revenueData[filter]}`}</p>
+        <p>{`Ksh${revenueData[filter]}`}</p>
       </div>
 
       {/* Earnings Per Route */}

@@ -94,7 +94,7 @@ const FareRateManagementPage = () => {
               >
                 <td className="px-6 py-4">{route.name}</td>
                 <td className="px-6 py-4">
-                  ${parseFloat(route.fareRate).toFixed(2)}
+                  Ksh{parseFloat(route.fareRate).toFixed(2)}
                 </td>
                 <td className="px-6 py-4">
                   {new Date(route.effectiveDate).toLocaleString()}
@@ -124,7 +124,7 @@ const FareRateManagementPage = () => {
             <form>
               <div className="mb-4">
                 <label className="block mb-2 text-gray-800">
-                  New Fare Rate ($)
+                  New Fare Rate (Ksh)
                 </label>
                 <input
                   type="number"
