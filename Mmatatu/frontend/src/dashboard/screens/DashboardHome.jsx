@@ -14,21 +14,21 @@ const DashboardHome = () => {
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {/* Example Cards for each section */}
         <Link
-          to="/bus-tracking"
+          to="bus-tracking"
           className="bg-blue-500 text-white p-4 rounded-lg shadow-lg text-center"
         >
           <h3 className="text-xl">Track Buses</h3>
           <p className="mt-2">View and track buses in real-time.</p>
         </Link>
         <Link
-          to="/revenue"
+          to="revenue"
           className="bg-green-500 text-white p-4 rounded-lg shadow-lg text-center"
         >
           <h3 className="text-xl">Revenue</h3>
           <p className="mt-2">Check the total revenue collection.</p>
         </Link>
         <Link
-          to="/passenger-info"
+          to="passenger-info"
           className="bg-yellow-500 text-white p-4 rounded-lg shadow-lg text-center"
         >
           <h3 className="text-xl">Passenger Info</h3>
