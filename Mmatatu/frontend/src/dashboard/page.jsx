@@ -22,7 +22,7 @@ function Dashboard() {
         {/* Content Area */}
         <div className="p-6 flex-1 overflow-auto">
           <Routes>
-            <Route path="/" element={<DashboardHome />} />
+            <Route path="/fare" element={<FareRateManagementPage />} />
           </Routes>
         </div>
       </div>
