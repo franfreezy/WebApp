@@ -4,12 +4,30 @@ import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 const BusManagementPage = () => {
   const [buses, setBuses] = useState([
-    { id: "bus1", route: "Route A", status: "Active", capacity: 30 },
-    { id: "bus2", route: "Route B", status: "Inactive", capacity: 40 },
-    { id: "bus3", route: "Route C", status: "Active", capacity: 50 },
+    {
+      id: "bus1",
+      route: "Route A",
+      status: "Active",
+      capacity: 30,
+      passengerCount: 25,
+    },
+    {
+      id: "bus2",
+      route: "Route B",
+      status: "Inactive",
+      capacity: 40,
+      passengerCount: 0,
+    },
+    {
+      id: "bus3",
+      route: "Route C",
+      status: "Active",
+      capacity: 50,
+      passengerCount: 45,
+    },
   ]);
-  const [searchQuery, setSearchQuery] = useState("");
 
+  const [searchQuery, setSearchQuery] = useState("");
   const [showAddBusModal, setShowAddBusModal] = useState(false);
   const [showEditBusModal, setShowEditBusModal] = useState(false);
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
@@ -18,6 +36,7 @@ const BusManagementPage = () => {
     route: "",
     status: "Active",
     capacity: "",
+    passengerCount: 0,
   });
 
   const handleNewBusChange = (e) => {
@@ -38,7 +57,7 @@ const BusManagementPage = () => {
 
   const addBus = () => {
     setBuses([...buses, { ...newBus, id: `bus${buses.length + 1}` }]);
-    setNewBus({ route: "", status: "Active", capacity: "" });
+    setNewBus({ route: "", status: "Active", capacity: "", passengerCount: 0 });
     setShowAddBusModal(false);
   };
 
@@ -49,7 +68,7 @@ const BusManagementPage = () => {
       )
     );
     setShowEditBusModal(false);
-    setNewBus({ route: "", status: "Active", capacity: "" });
+    setNewBus({ route: "", status: "Active", capacity: "", passengerCount: 0 });
   };
 
   const deleteBus = () => {
@@ -90,6 +109,7 @@ const BusManagementPage = () => {
               <th className="px-6 py-3 text-left">Route</th>
               <th className="px-6 py-3 text-left">Status</th>
               <th className="px-6 py-3 text-left">Capacity</th>
+              <th className="px-6 py-3 text-left">Passenger Count</th>
               <th className="px-6 py-3 text-left">Actions</th>
             </tr>
           </thead>
@@ -103,6 +123,7 @@ const BusManagementPage = () => {
                 <td className="px-6 py-4">{bus.route}</td>
                 <td className="px-6 py-4">{bus.status}</td>
                 <td className="px-6 py-4">{bus.capacity}</td>
+                <td className="px-6 py-4">{bus.passengerCount}</td>
                 <td className="px-6 py-4 flex space-x-4">
                   <button
                     onClick={() => {
