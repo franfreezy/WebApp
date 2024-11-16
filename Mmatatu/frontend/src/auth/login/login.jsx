@@ -8,6 +8,7 @@ const Login = () => {
   });
 
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // State for loading
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -21,6 +22,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form Submitted");
+
+    setLoading(true); // Start loading
 
     try {
       console.log("Sending Request");
@@ -42,13 +45,11 @@ const Login = () => {
 
       if (response.ok) {
         console.log("Access Token:", localStorage.getItem("accessToken"));
-
         console.log("Email from localStorage:", localStorage.getItem("email"));
         const { access, refresh, user } = responseBody;
         console.log(responseBody);
         localStorage.setItem("accessToken", access);
         localStorage.setItem("refreshToken", refresh);
-
         localStorage.setItem("email", user.email);
         navigate("/dashboard");
       } else {
@@ -64,8 +65,11 @@ const Login = () => {
     } catch (err) {
       console.error("Fetch Error:", err);
       setError("Error logging in");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
+
   return (
     <section className="h-screen w-screen relative">
       <img
@@ -148,7 +152,39 @@ const Login = () => {
                 type="submit"
                 className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
-                Sign in
+                {loading ? (
+                  <span className="flex justify-center items-center">
+                    <svg
+                      className="w-6 h-6 mr-2 animate-spin"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        strokeDasharray="31.4 31.4"
+                        strokeDashoffset="31.4"
+                        className="text-white"
+                      ></circle>
+                      <path
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                        d="M4 12c0-4.418 3.582-8 8-8"
+                        className="text-blue-500"
+                      ></path>
+                    </svg>
+                    Loading...
+                  </span>
+                ) : (
+                  "Sign in"
+                )}
               </button>
               <div className="inline-flex items-center justify-center w-full relative">
                 <hr className="w-64 h-px my-4 bg-gray-200 border-0 dark:bg-gray-700" />
