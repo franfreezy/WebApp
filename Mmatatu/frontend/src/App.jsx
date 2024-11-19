@@ -10,6 +10,7 @@ import PassengerInformationPage from "./dashboard/screens/PassengerInformationPa
 import FareRateManagementPage from "./dashboard/screens/FareRateManagementPage";
 import DashboardHome from "./dashboard/screens/DashboardHome";
 import DriverDashboard from "./Driver/page";
+import CustomerDashboard from "./Customer/page";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/driver" element={<DriverDashboard />} />
+        <Route path="/customer" element={<CustomerDashboard />} />
 
         {/* Protect these routes */}
 
