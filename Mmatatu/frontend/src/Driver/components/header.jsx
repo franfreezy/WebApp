@@ -3,7 +3,7 @@ export default function Header() {
     <header className="bg-blue-600 text-white p-4 flex justify-between items-center">
       <div className="flex items-center space-x-3">
         <img
-          src="/profile.jpg"
+          src="/Assets/person.jpg"
           alt="Driver Profile"
           className="h-10 w-10 rounded-full"
         />
