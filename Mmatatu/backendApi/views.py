@@ -99,94 +99,35 @@ class passapi(APIView):
 
 
 @permission_classes([AllowAny])
-class soilprecipitation(APIView):
+class gsmcoords(APIView):
     def post(self, request, *args, **kwargs):
         try:
-            # Check if request.data is a dictionary (it will be if the content is JSON)
+            
             if isinstance(request.data, dict) and '_content' not in request.data:
                 data = request.data
                 print("Parsed as JSON:", data)
             else:
-                # Convert QueryDict to a dictionary
                 data = dict(request.data)
-                print("QueryDict Data:", data)
-                
-                # Extract JSON content from '_content' key
-                data_json = data.get('_content', '')  # Assuming '_content' exists in QueryDict
-                print(data_json)
+                data_json = data.get('_content', '')  
                 data_json = data_json[0].replace("\r\n", "")  # Clean up new lines if any
                 data = json.loads(data_json)  # Convert JSON string to a Python dictionary
                 print("Extracted Data:", data)
             
-            #change this to suit the data on esp
-            # Extract location data
-            soilprecipitation = data.get('soilprecipitation')
             
-
-            # Simple validation check
-            if soilprecipitation is None:
+            longitude= data.get('longitude')
+            latitude= data.get('latitude')
+            
+            if longitude is None and latitude is None :
                 return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
 
             
-            soilprecipitation = soilprecipitation(
-                soilprecipitation=soilprecipitation
+            coords_data= gsm_coords(
+                longitude=longitude
+                latitude=latitude
             )
-            soilprecipitation.save() 
+            coords_data.save() 
             return Response({"message": "Success", "data": data}, status=status.HTTP_200_OK)
         
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
 
-@permission_classes([AllowAny])
-class groundstationCoordinates(APIView):
-    def post(self, request, *args, **kwargs):
-
-        try:
-            if isinstance(request.data, dict) and '_content' not in request.data:
-                data = request.data
-                print("Parsed as JSON:", data)
-            else:
-                # Convert QueryDict to a dictionary
-                data = dict(request.data)
-                print("QueryDict Data:", data)
-                
-                # Extract JSON content from '_content' key
-                data_json = data.get('_content', '')  # Assuming '_content' exists in QueryDict
-                print(data_json)
-                data_json = data_json[0].replace("\r\n", "")  # Clean up new lines if any
-                data = json.loads(data_json)  # Convert JSON string to a Python dictionary
-                print("Extracted Data:", data)
-                
-            latitude = data.get('latitude')
-            longitude = data.get('longitude')
-            entry = GSCoordinates(data)
-            entry.coordinatesave()
-            
-            if latitude is None or longitude is None:
-                return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
-
-            coords = GSCoordinates(
-                latitude=latitude,
-                longitude=longitude
-                
-            )
-            coords.save()
-
-            return JsonResponse({'status': 'success', 'message': 'Coordinates updated'})
-        except Exception as e:
-            return JsonResponse({'status': 'error', 'message': str(e)})
-    
-
-
-def get_gs(request):
-    coords = GSCoordinates.objects.first()
-    if coords:
-        return JsonResponse({
-            'latitude': coords.latitude,
-            'longitude': coords.longitude
-        })
-    else:
-        return JsonResponse({
-            'latitude': None,
-            'longitude': None
-        })
