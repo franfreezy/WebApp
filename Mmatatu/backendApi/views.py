@@ -4,11 +4,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.response import Response
 from rest_framework import status
-#from .serializers import UserSerializer
 import json
 from rest_framework.views import APIView
 #from Backend.models import smoke,batt,temperature,soilph,soilprecipitation
-#from Backend.models import GSCoordinates,Images
+from backend.models import gsm_coords
 from django.views.decorators.csrf import csrf_exempt 
 
 
@@ -109,8 +108,8 @@ class gsmcoords(APIView):
             else:
                 data = dict(request.data)
                 data_json = data.get('_content', '')  
-                data_json = data_json[0].replace("\r\n", "")  # Clean up new lines if any
-                data = json.loads(data_json)  # Convert JSON string to a Python dictionary
+                data_json = data_json[0].replace("\r\n", "") 
+                data = json.loads(data_json)  
                 print("Extracted Data:", data)
             
             
@@ -122,7 +121,7 @@ class gsmcoords(APIView):
 
             
             coords_data= gsm_coords(
-                longitude=longitude
+                longitude=longitude,
                 latitude=latitude
             )
             coords_data.save() 

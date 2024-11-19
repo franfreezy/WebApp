@@ -81,3 +81,12 @@ class location(models.Model):
 
     def __str__(self):
         return f"batt: {self.batt}, Time: {self.timestamp}"
+    
+class gsm_coords(models.Model):
+    latitude = models.FloatField()  
+    longitude = models.FloatField()  
+    timestamp = models.DateTimeField(auto_now_add=True)
+     
+
+    def __str__(self):
+        return self.name
