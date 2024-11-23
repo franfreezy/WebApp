@@ -7,7 +7,7 @@ from rest_framework import status
 import json
 from rest_framework.views import APIView
 #from Backend.models import smoke,batt,temperature,soilph,soilprecipitation
-from backend.models import gsm_coords
+#from backend.models import gsm_coords
 from django.views.decorators.csrf import csrf_exempt 
 
 

@@ -9,7 +9,9 @@ class Coordinates(models.Model):
         return f"Lat: {self.latitude}, Long: {self.longitude}"
 
 class Fare(models.Model):
-    Route = models.CharField()
+    route_id = models.CharField()
+    route_start = models.CharField()
+    route_end = models.CharField()
     Rate = models.FloatField()
     updated_at = models.DateTimeField(auto_now=True)
 
