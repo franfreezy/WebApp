@@ -51,7 +51,7 @@ const Login = () => {
         localStorage.setItem("accessToken", access);
         localStorage.setItem("refreshToken", refresh);
         localStorage.setItem("email", user.email);
-        navigate("/dashboard");
+        navigate("/driver");
       } else {
         let errorMessage = "Error logging in";
 
