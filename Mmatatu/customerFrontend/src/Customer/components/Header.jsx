@@ -1,11 +1,20 @@
 export default function Header({ title }) {
+  const handleSignOut = () => {
+    localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+  localStorage.removeItem('username');
+  localStorage.removeItem('email');
+
+  
+  window.location.href = '/';
+  };
   return (
     <header className="bg-white shadow flex items-center justify-between px-6 py-4">
       <h1 className="text-2xl font-bold text-blue-600">{title}</h1>
       <div className="flex items-center space-x-4">
         <button
           className="bg-blue-500 text-white px-4 py-2 rounded"
-          onClick={() => alert("Logged out!")}
+          onClick={handleSignOut} 
         >
           Logout
         </button>
