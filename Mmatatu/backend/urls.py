@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import register
+from .views import register,Faresetting
 
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -11,6 +11,7 @@ urlpatterns = [
     #path('', sensor_data_view, name="homepage"),
     path('register/', register, name="register"),
     path('login/', views.login),
-    
+    path('fares/', Faresetting, name='fare_view'),
+    path('fares/update/<str:route_id>/', views.update_fare_rate, name='update_fare_rate')
     
 ]
