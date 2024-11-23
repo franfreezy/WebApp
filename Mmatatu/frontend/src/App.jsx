@@ -9,8 +9,7 @@ import RevenueCollectionPage from "./dashboard/screens/RevenueCollectionPage";
 import PassengerInformationPage from "./dashboard/screens/PassengerInformationPage";
 import FareRateManagementPage from "./dashboard/screens/FareRateManagementPage";
 import DashboardHome from "./dashboard/screens/DashboardHome";
-import DriverDashboard from "../../driverFrontend/src/Driver/page";
-import CustomerDashboard from "./Customer/page";
+
 
 function App() {
   return (
@@ -19,8 +18,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/driver" element={<DriverDashboard />} />
-        <Route path="/customer" element={<CustomerDashboard />} />
+        
 
         {/* Protect these routes */}
 
