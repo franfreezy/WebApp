@@ -20,7 +20,60 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from django.utils import timezone
+from .models import Bus
+from .serializers import BusSerializer
 
+@permission_classes([AllowAny])
+@csrf_exempt
+def edit_bus(request, id):
+    if request.method == 'PUT':
+        try:
+            bus = get_object_or_404(Bus, id=id)
+            data = json.loads(request.body)
+
+            bus.routeStart = data.get('routeStart', bus.routeStart)
+            bus.routeEnd = data.get('routeEnd', bus.routeEnd)
+            bus.status = data.get('status', bus.status)
+            bus.capacity = data.get('capacity', bus.capacity)
+            bus.passengerCount = data.get('passengerCount', bus.passengerCount)
+            bus.save()
+
+            return JsonResponse({"message": "Bus updated successfully"}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@permission_classes([AllowAny])
+@csrf_exempt
+def delete_bus(request, id):
+    if request.method == 'DELETE':
+        try:
+            bus = get_object_or_404(Bus, id=id)
+            bus.delete()
+
+            return JsonResponse({"message": "Bus deleted successfully"}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+
+    return JsonResponse({"error": "Invalid request method"}, status=405)
+
+@permission_classes([AllowAny])
+class BusListCreateView(APIView):
+    # Handle GET requests to display buses
+    def get(self, request, *args, **kwargs):
+        buses = Bus.objects.all()
+        serializer = BusSerializer(buses, many=True)
+        return Response(serializer.data)
+
+    # Handle POST requests to add a new bus
+    def post(self, request, *args, **kwargs):
+        serializer = BusSerializer(data=request.data)
+        if serializer.is_valid():
+            bus = serializer.save()
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):

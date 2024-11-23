@@ -17,3 +17,19 @@ class Fare(models.Model):
 
     def __str__(self):
         return f"Lat: {self.Route}, Long: {self.Rate}"
+    
+class Bus(models.Model):
+    STATUS_CHOICES = (
+        ('Active', 'Active'),
+        ('Inactive', 'Inactive'),
+    )
+
+    id = models.CharField(max_length=10, unique=True, primary_key=True)
+    routeStart = models.CharField(max_length=100)
+    routeEnd = models.CharField(max_length=100)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Active')
+    capacity = models.PositiveIntegerField()
+    passengerCount = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Bus {self.id} - {self.route_start} to {self.route_end}"
