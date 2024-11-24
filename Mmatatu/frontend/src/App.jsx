@@ -9,7 +9,7 @@ import RevenueCollectionPage from "./dashboard/screens/RevenueCollectionPage";
 import PassengerInformationPage from "./dashboard/screens/PassengerInformationPage";
 import FareRateManagementPage from "./dashboard/screens/FareRateManagementPage";
 import DashboardHome from "./dashboard/screens/DashboardHome";
-
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 function App() {
   return (

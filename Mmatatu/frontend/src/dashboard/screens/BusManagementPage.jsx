@@ -1,43 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Dialog } from "@headlessui/react";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 const BusManagementPage = () => {
-  const [buses, setBuses] = useState([
-    {
-      id: "bus1",
-      route: "Route A",
-      status: "Active",
-      capacity: 30,
-      passengerCount: 25,
-    },
-    {
-      id: "bus2",
-      route: "Route B",
-      status: "Inactive",
-      capacity: 40,
-      passengerCount: 0,
-    },
-    {
-      id: "bus3",
-      route: "Route C",
-      status: "Active",
-      capacity: 50,
-      passengerCount: 45,
-    },
-  ]);
-
+  const [buses, setBuses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showAddBusModal, setShowAddBusModal] = useState(false);
   const [showEditBusModal, setShowEditBusModal] = useState(false);
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [busToEdit, setBusToEdit] = useState(null);
   const [newBus, setNewBus] = useState({
-    route: "",
+    routeStart: "",
+    routeEnd: "",
     status: "Active",
     capacity: "",
     passengerCount: 0,
   });
+
+  // Fetch buses from backend
+  useEffect(() => {
+    const fetchBuses = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/backend/buses/"); // Update with your backend endpoint
+        setBuses(response.data);
+      } catch (error) {
+        console.error("Error fetching buses:", error);
+      }
+    };
+
+    fetchBuses();
+  }, []);
 
   const handleNewBusChange = (e) => {
     const { name, value } = e.target;
@@ -50,31 +43,65 @@ const BusManagementPage = () => {
 
   const filteredBuses = buses.filter(
     (bus) =>
-      bus.route.toLowerCase().includes(searchQuery) ||
-      bus.status.toLowerCase().includes(searchQuery) ||
+      bus.routeStart.toLowerCase().includes(searchQuery) ||
+      bus.routeEnd.toLowerCase().includes(searchQuery) ||
       bus.id.toLowerCase().includes(searchQuery)
   );
 
-  const addBus = () => {
-    setBuses([...buses, { ...newBus, id: `bus${buses.length + 1}` }]);
-    setNewBus({ route: "", status: "Active", capacity: "", passengerCount: 0 });
-    setShowAddBusModal(false);
+  const generateBusID = () => {
+    const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+    const randomLetter = () =>
+      letters.charAt(Math.floor(Math.random() * letters.length));
+    const randomNumber = () => Math.floor(100 + Math.random() * 900);
+
+    return `K${randomLetter()}${randomLetter()}${randomNumber()}${randomLetter()}`;
   };
 
-  const editBus = () => {
-    setBuses(
-      buses.map((bus) =>
-        bus.id === busToEdit.id ? { ...bus, ...newBus } : bus
-      )
-    );
-    setShowEditBusModal(false);
-    setNewBus({ route: "", status: "Active", capacity: "", passengerCount: 0 });
+  const addBus = async () => {
+    const newBusWithID = { ...newBus, id: generateBusID() };
+    console.log(newBusWithID);
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/backend/buses/", 
+        newBusWithID
+      );
+      setBuses([...buses, response.data]);
+      setNewBus({
+        routeStart: "",
+        routeEnd: "",
+        status: "Active",
+        capacity: "",
+        passengerCount: 0,
+      });
+      setShowAddBusModal(false);
+    } catch (error) {
+      console.error("Error adding bus:", error);
+    }
   };
 
-  const deleteBus = () => {
-    setBuses(buses.filter((bus) => bus.id !== busToEdit.id));
-    setShowDeleteConfirmModal(false);
-    setBusToEdit(null);
+  const editBus = async () => {
+    try {
+      await axios.put(`http://127.0.0.1:8000/backend/buses/${busToEdit.id}/edit/`, newBus);
+
+      setBuses(
+        buses.map((bus) =>
+          bus.id === busToEdit.id ? { ...bus, ...newBus } : bus
+        )
+      );
+      setShowEditBusModal(false);
+    } catch (error) {
+      console.error("Error updating bus:", error);
+    }
+  };
+
+  const deleteBus = async () => {
+    try {
+      await axios.delete(`http://127.0.0.1:8000/backend/buses/${busToEdit.id}/delete/`);
+      setBuses(buses.filter((bus) => bus.id !== busToEdit.id));
+      setShowDeleteConfirmModal(false);
+    } catch (error) {
+      console.error("Error deleting bus:", error);
+    }
   };
 
   return (
@@ -102,53 +129,59 @@ const BusManagementPage = () => {
 
       {/* Bus Table */}
       <div className="overflow-x-auto shadow-lg sm:rounded-lg">
-        <table className="min-w-full table-auto bg-white text-gray-800">
-          <thead>
-            <tr className="bg-blue-800 text-white">
-              <th className="px-6 py-3 text-left">Bus ID</th>
-              <th className="px-6 py-3 text-left">Route</th>
-              <th className="px-6 py-3 text-left">Status</th>
-              <th className="px-6 py-3 text-left">Capacity</th>
-              <th className="px-6 py-3 text-left">Passenger Count</th>
-              <th className="px-6 py-3 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredBuses.map((bus) => (
-              <tr
-                key={bus.id}
-                className="border-b hover:bg-blue-100 transition-all duration-300"
-              >
-                <td className="px-6 py-4">{bus.id}</td>
-                <td className="px-6 py-4">{bus.route}</td>
-                <td className="px-6 py-4">{bus.status}</td>
-                <td className="px-6 py-4">{bus.capacity}</td>
-                <td className="px-6 py-4">{bus.passengerCount}</td>
-                <td className="px-6 py-4 flex space-x-4">
-                  <button
-                    onClick={() => {
-                      setShowEditBusModal(true);
-                      setBusToEdit(bus);
-                      setNewBus(bus);
-                    }}
-                    className="text-yellow-500 hover:text-yellow-700 transform hover:scale-110 transition-all duration-300"
-                  >
-                    <PencilIcon className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowDeleteConfirmModal(true);
-                      setBusToEdit(bus);
-                    }}
-                    className="text-red-500 hover:text-red-700 transform hover:scale-110 transition-all duration-300"
-                  >
-                    <TrashIcon className="w-5 h-5" />
-                  </button>
-                </td>
+        {buses.length === 0 ? (
+          <p className="text-center text-white">No buses available</p>
+        ) : (
+          <table className="min-w-full table-auto bg-white text-gray-800">
+            <thead>
+              <tr className="bg-blue-800 text-white">
+                <th className="px-6 py-3 text-left">Bus ID</th>
+                <th className="px-6 py-3 text-left">Route Start</th>
+                <th className="px-6 py-3 text-left">Route End</th>
+                <th className="px-6 py-3 text-left">Status</th>
+                <th className="px-6 py-3 text-left">Capacity</th>
+                <th className="px-6 py-3 text-left">Passengers</th>
+                <th className="px-6 py-3 text-left">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredBuses.map((bus) => (
+                <tr
+                  key={bus.id}
+                  className="border-b hover:bg-blue-100 transition-all duration-300"
+                >
+                  <td className="px-6 py-4">{bus.id}</td>
+                  <td className="px-6 py-4">{bus.routeStart}</td>
+                  <td className="px-6 py-4">{bus.routeEnd}</td>
+                  <td className="px-6 py-4">{bus.status}</td>
+                  <td className="px-6 py-4">{bus.capacity}</td>
+                  <td className="px-6 py-4">{bus.passengerCount}</td>
+                  <td className="px-6 py-4 flex space-x-4">
+                    <button
+                      onClick={() => {
+                        setShowEditBusModal(true);
+                        setBusToEdit(bus);
+                        setNewBus(bus);
+                      }}
+                      className="text-yellow-500 hover:text-yellow-700 transform hover:scale-110 transition-all duration-300"
+                    >
+                      <PencilIcon className="w-5 h-5" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowDeleteConfirmModal(true);
+                        setBusToEdit(bus);
+                      }}
+                      className="text-red-500 hover:text-red-700 transform hover:scale-110 transition-all duration-300"
+                    >
+                      <TrashIcon className="w-5 h-5" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* Add Bus Modal */}
@@ -160,16 +193,29 @@ const BusManagementPage = () => {
             </Dialog.Title>
             <form>
               <div className="mb-4">
-                <label className="block mb-2 text-gray-800">Route</label>
+                <label className="block mb-2 text-gray-800">Route Start</label>
                 <input
                   type="text"
-                  name="route"
-                  value={newBus.route}
+                  name="routeStart"
+                  value={newBus.routeStart}
                   onChange={handleNewBusChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
+
+              <div className="mb-4">
+                <label className="block mb-2 text-gray-800">Route End</label>
+                <input
+                  type="text"
+                  name="routeEnd"
+                  value={newBus.routeEnd}
+                  onChange={handleNewBusChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
               <div className="mb-4">
                 <label className="block mb-2 text-gray-800">Capacity</label>
                 <input
@@ -181,18 +227,7 @@ const BusManagementPage = () => {
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label className="block mb-2 text-gray-800">Status</label>
-                <select
-                  name="status"
-                  value={newBus.status}
-                  onChange={handleNewBusChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-              </div>
+
               <div className="flex justify-between">
                 <button
                   type="button"
@@ -226,11 +261,22 @@ const BusManagementPage = () => {
             </Dialog.Title>
             <form>
               <div className="mb-4">
-                <label className="block mb-2 text-gray-800">Route</label>
+                <label className="block mb-2 text-gray-800">Route Start</label>
                 <input
                   type="text"
-                  name="route"
-                  value={newBus.route}
+                  name="routeStart"
+                  value={newBus.routeStart}
+                  onChange={handleNewBusChange}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-2 text-gray-800">Route End</label>
+                <input
+                  type="text"
+                  name="routeEnd"
+                  value={newBus.routeEnd}
                   onChange={handleNewBusChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
@@ -246,18 +292,6 @@ const BusManagementPage = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2 text-gray-800">Status</label>
-                <select
-                  name="status"
-                  value={newBus.status}
-                  onChange={handleNewBusChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
               </div>
               <div className="flex justify-between">
                 <button
