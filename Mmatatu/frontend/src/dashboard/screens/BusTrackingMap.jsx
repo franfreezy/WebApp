@@ -43,7 +43,7 @@ const BusTrackingMap = () => {
     // Fetch fares data from the backend
     const fetchFares = async () => {
       try {
-        const response = await fetch('https://mmatatu.onrender.com/backend/fares/');
+        const response = await fetch('https://matatuback.onrender.com/backend/fares/');
         const data = await response.json();
         setFares(data.fares || []);
       } catch (error) {
