@@ -27,6 +27,7 @@ const FareRateManagementPage = () => {
     effectiveDate: "",
   });
   const [selectedRouteId, setSelectedRouteId] = useState(null); // This will store the routeId for modifying
+  const [error, setError] = useState(""); // State for error message
 
   // Fetch data from the backend
   useEffect(() => {
@@ -40,9 +41,9 @@ const FareRateManagementPage = () => {
           fareRate: fare.Rate,
           effectiveDate: fare.updated_at,
         }));
-        
         setRoutes(fetchedRoutes);
       } catch (error) {
+        setError("Error fetching routes. Please try again later.");
         console.error("Error fetching routes:", error);
       }
     };
@@ -63,16 +64,14 @@ const FareRateManagementPage = () => {
   // Handle updating fare rate
   const updateFareRate = async () => {
     try {
-      console.log(selectedRouteId);
       await axios.put(`https://matatuback.onrender.com/backend/fares/update/${selectedRouteId}/`, {
         Rate: newFareRate.fareRate,
         updated_at: newFareRate.effectiveDate,
       });
 
-      
       setRoutes(
         routes.map((route) =>
-          route.id === selectedRouteId
+          route.route_id === selectedRouteId
             ? { ...route, fareRate: newFareRate.fareRate, effectiveDate: newFareRate.effectiveDate }
             : route
         )
@@ -81,7 +80,9 @@ const FareRateManagementPage = () => {
       setIsModalOpen(false);
       setNewFareRate({ fareRate: "", effectiveDate: "" });
       setSelectedRouteId(null);
+      setError(""); // Clear error after successful update
     } catch (error) {
+      setError("Error updating fare rate. Please try again later.");
       console.error("Error updating fare rate:", error);
     }
   };
@@ -90,7 +91,6 @@ const FareRateManagementPage = () => {
     try {
       const newRouteId = generateRandomRouteId(); // Generate a random route_id
 
-     
       await axios.post("https://matatuback.onrender.com/backend/fares/", {
         route_start: newEntry.route_start,
         route_end: newEntry.route_end,
@@ -113,13 +113,14 @@ const FareRateManagementPage = () => {
       // Close modal and reset form
       setIsAddModalOpen(false);
       setNewEntry({ route_start: "", route_end: "", fareRate: "", effectiveDate: "" });
+      setError(""); // Clear error after successful addition
     } catch (error) {
+      setError("Error adding new entry. Please try again later.");
       console.error("Error adding new entry:", error);
     }
   };
 
   const openModal = (route) => {
-    console.log(route.route_id);
     setSelectedRouteId(route.route_id);
     setNewFareRate({
       fareRate: route.fareRate,
@@ -149,6 +150,13 @@ const FareRateManagementPage = () => {
         Fare Rate Management
       </h2>
 
+      {/* Error Message Display */}
+      {error && (
+        <div className="bg-red-600 text-white p-4 mb-4 rounded-md">
+          {error}
+        </div>
+      )}
+
       {/* Fare Overview Section */}
       <div className="mb-8 flex justify-between">
         <h3 className="text-2xl font-semibold mb-4 text-blue-800">
@@ -174,7 +182,7 @@ const FareRateManagementPage = () => {
         <tbody>
           {routes.map((route) => (
             <tr
-              key={route.id}
+              key={route.route_id}
               className="border-b hover:bg-blue-100 transition-all duration-300"
             >
               <td className="px-6 py-4">{route.route_start}</td>
@@ -229,7 +237,7 @@ const FareRateManagementPage = () => {
                 />
               </div>
               <div className="mb-4">
-                <label className="block mb-2 text-gray-800">Fare Rate</label>
+                <label className="block mb-2 text-gray-800">Fare Rate (Ksh)</label>
                 <input
                   type="number"
                   name="fareRate"
@@ -250,20 +258,20 @@ const FareRateManagementPage = () => {
                   required
                 />
               </div>
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={addNewEntry}
-                  className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600"
-                >
-                  Add Entry
-                </button>
+              <div className="flex justify-end">
                 <button
                   type="button"
                   onClick={closeAddModal}
-                  className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                  className="px-6 py-2 bg-gray-500 text-white rounded-lg mr-4 hover:bg-gray-600"
                 >
                   Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={addNewEntry}
+                  className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                >
+                  Add Entry
                 </button>
               </div>
             </form>
@@ -280,7 +288,7 @@ const FareRateManagementPage = () => {
             </h3>
             <form>
               <div className="mb-4">
-                <label className="block mb-2 text-gray-800">Fare Rate</label>
+                <label className="block mb-2 text-gray-800">Fare Rate (Ksh)</label>
                 <input
                   type="number"
                   name="fareRate"
@@ -301,20 +309,20 @@ const FareRateManagementPage = () => {
                   required
                 />
               </div>
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={updateFareRate}
-                  className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                >
-                  Update Fare
-                </button>
+              <div className="flex justify-end">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600"
+                  className="px-6 py-2 bg-gray-500 text-white rounded-lg mr-4 hover:bg-gray-600"
                 >
                   Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={updateFareRate}
+                  className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  Update Fare Rate
                 </button>
               </div>
             </form>
