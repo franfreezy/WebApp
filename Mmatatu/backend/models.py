@@ -7,7 +7,14 @@ class Coordinates(models.Model):
 
     def __str__(self):
         return f"Lat: {self.latitude}, Long: {self.longitude}"
+class coordinatesArd(models.Model):
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    updated_at = models.DateTimeField(auto_now=True)
 
+    def __str__(self):
+        return f"Lat: {self.latitude}, Long: {self.longitude}"
+    
 class Fare(models.Model):
     route_id = models.CharField()
     route_start = models.CharField()

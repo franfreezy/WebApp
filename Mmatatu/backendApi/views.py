@@ -7,7 +7,7 @@ from rest_framework import status
 import json
 from rest_framework.views import APIView
 #from Backend.models import smoke,batt,temperature,soilph,soilprecipitation
-#from backend.models import gsm_coords
+from backend.models import coordinatesArd
 from django.views.decorators.csrf import csrf_exempt 
 
 
@@ -36,19 +36,22 @@ class driverapi(APIView):
                 print("Extracted Data:", data)
 
             # Extract temperature and humidity
-            soilph= data.get('soilph')
-            print(soilph)
+            longitude= data.get('longitude')
+            latitude= data.get('latitude')
+            print(latitude)
+            print(longitude)
 
             # Simple validation check
-            if soilph is None:
+            if longitude is None and latitude is None:
                 return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
             
-            soilph_data = soilph(
-                soilph=soilph
+            coordinate_data = coordinatesArd(
+                longitude=longitude,
+                latitude=latitude
                 
                 
             )
-            soilph_data.save()
+            coordinate_data.save()
            
             return Response({"message": "Success", "data": data}, status=status.HTTP_200_OK)
         
