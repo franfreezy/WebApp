@@ -44,13 +44,15 @@ const Login = () => {
       const responseBody = await response.json();
 
       if (response.ok) {
-        console.log("Access Token:", localStorage.getItem("accessToken"));
-        console.log("Email from localStorage:", localStorage.getItem("email"));
+        
+        
         const { access, refresh, user } = responseBody;
-        console.log(responseBody);
+        
         localStorage.setItem("accessToken", access);
         localStorage.setItem("refreshToken", refresh);
         localStorage.setItem("email", user.email);
+        
+        
         navigate("/driver");
       } else {
         let errorMessage = "Error logging in";
