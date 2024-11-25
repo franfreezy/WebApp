@@ -22,7 +22,7 @@ const BusManagementPage = () => {
   useEffect(() => {
     const fetchBuses = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/backend/buses/"); // Update with your backend endpoint
+        const response = await axios.get("https://matatuback.onrender.com/backend/buses/"); // Update with your backend endpoint
         setBuses(response.data);
       } catch (error) {
         console.error("Error fetching buses:", error);
@@ -62,7 +62,7 @@ const BusManagementPage = () => {
     console.log(newBusWithID);
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/backend/buses/", 
+        "https://matatuback.onrender.com/backend/buses/", 
         newBusWithID
       );
       setBuses([...buses, response.data]);
@@ -81,7 +81,7 @@ const BusManagementPage = () => {
 
   const editBus = async () => {
     try {
-      await axios.put(`http://127.0.0.1:8000/backend/buses/${busToEdit.id}/edit/`, newBus);
+      await axios.put(`https://matatuback.onrender.com/backend/buses/${busToEdit.id}/edit/`, newBus);
 
       setBuses(
         buses.map((bus) =>
@@ -96,7 +96,7 @@ const BusManagementPage = () => {
 
   const deleteBus = async () => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/backend/buses/${busToEdit.id}/delete/`);
+      await axios.delete(`https://matatuback.onrender.com/backend/buses/${busToEdit.id}/delete/`);
       setBuses(buses.filter((bus) => bus.id !== busToEdit.id));
       setShowDeleteConfirmModal(false);
     } catch (error) {
