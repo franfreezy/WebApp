@@ -1,6 +1,20 @@
 import { useState, useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer, Polyline, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+// Import the icons directly as ES Modules
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+// Fix for Leaflet's default icon paths
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
 function FitBounds({ bounds }) {
   const map = useMap();
@@ -59,7 +73,7 @@ export default function RouteMap({ selectedRoute }) {
           if (startCoordinates) {
             stops.push({
               id: "start",
-              position: [startCoordinates[1], startCoordinates[0]], // Reverse here for Leaflet
+              position: [startCoordinates[1], startCoordinates[0]], 
               name: selectedRoute.route_start,
             });
             coordinates.push(startCoordinates);
@@ -72,7 +86,7 @@ export default function RouteMap({ selectedRoute }) {
           if (endCoordinates) {
             stops.push({
               id: "end",
-              position: [endCoordinates[1], endCoordinates[0]], // Reverse here for Leaflet
+              position: [endCoordinates[1], endCoordinates[0]], 
               name: selectedRoute.route_end,
             });
             coordinates.push(endCoordinates);
