@@ -1,27 +1,127 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { useState, useEffect } from "react";
+import { MapContainer, Marker, Popup, TileLayer, Polyline, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-export default function RouteMap() {
-  const position = [51.505, -0.09]; // Example position
-  const stops = [
-    { id: 1, position: [51.515, -0.1], name: "Stop 1" },
-    { id: 2, position: [51.525, -0.08], name: "Stop 2" },
-  ];
+function FitBounds({ bounds }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (bounds && bounds.length > 0) {
+      map.fitBounds(bounds, { padding: [50, 50] }); // Add padding for better visibility
+    }
+  }, [bounds, map]);
+
+  return null;
+}
+
+export default function RouteMap({ selectedRoute }) {
+  const [markers, setMarkers] = useState([]);
+  const [routeCoordinates, setRouteCoordinates] = useState([]);
+  const [bounds, setBounds] = useState([]);
+  const mapboxAccessToken = import.meta.env.VITE_MAPBOX_TOKEN;
+
+  useEffect(() => {
+    const fetchCoordinates = async (place) => {
+      const response = await fetch(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+          place
+        )}.json?access_token=${mapboxAccessToken}`
+      );
+      const data = await response.json();
+
+      if (data.features && data.features.length > 0) {
+        return data.features[0].center; // [longitude, latitude] (no reverse here)
+      }
+      return null; // No result found
+    };
+
+    const fetchRoute = async (coordinates) => {
+      const waypoints = coordinates.map((coord) => coord.join(",")).join(";");
+      const response = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${waypoints}?geometries=geojson&access_token=${mapboxAccessToken}`
+      );
+      const data = await response.json();
+
+      if (data.routes && data.routes.length > 0) {
+        return data.routes[0].geometry.coordinates; // [longitude, latitude] (no reverse here)
+      }
+      return [];
+    };
+
+    const getMarkersAndRoute = async () => {
+      if (selectedRoute) {
+        const stops = [];
+        const coordinates = [];
+
+        // Fetch coordinates for route_start
+        if (selectedRoute.route_start) {
+          const startCoordinates = await fetchCoordinates(selectedRoute.route_start);
+          if (startCoordinates) {
+            stops.push({
+              id: "start",
+              position: [startCoordinates[1], startCoordinates[0]], // Reverse here for Leaflet
+              name: selectedRoute.route_start,
+            });
+            coordinates.push(startCoordinates);
+          }
+        }
+
+        // Fetch coordinates for route_end
+        if (selectedRoute.route_end) {
+          const endCoordinates = await fetchCoordinates(selectedRoute.route_end);
+          if (endCoordinates) {
+            stops.push({
+              id: "end",
+              position: [endCoordinates[1], endCoordinates[0]], // Reverse here for Leaflet
+              name: selectedRoute.route_end,
+            });
+            coordinates.push(endCoordinates);
+          }
+        }
+
+        setMarkers(stops);
+
+        // Fetch the route connecting the coordinates
+        if (coordinates.length > 1) {
+          const route = await fetchRoute(coordinates);
+          setRouteCoordinates(route.map((coord) => [coord[1], coord[0]])); // Reverse for Leaflet
+
+          // Calculate bounds for the map
+          const allPoints = [
+            ...coordinates.map((coord) => [coord[1], coord[0]]), // Reverse for Leaflet
+            ...route.map((coord) => [coord[1], coord[0]]),
+          ];
+          setBounds(allPoints);
+        }
+      }
+    };
+
+    getMarkersAndRoute();
+  }, [selectedRoute, mapboxAccessToken]);
 
   return (
-    <MapContainer center={position} zoom={13} className="h-96 rounded shadow">
+    <MapContainer
+      center={[-1.0045, 37.028]} // Default center
+      zoom={13}
+      className="h-[80vh] w-full rounded shadow-lg"
+    >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution="&copy; OpenStreetMap contributors"
+        url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${mapboxAccessToken}`}
+        attribution='&copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Marker position={position}>
-        <Popup>Your Current Location</Popup>
-      </Marker>
-      {stops.map((stop) => (
+
+      {/* Adjust the view to fit bounds */}
+      <FitBounds bounds={bounds} />
+
+      {/* Render markers for route_start and route_end */}
+      {markers.map((stop) => (
         <Marker key={stop.id} position={stop.position}>
           <Popup>{stop.name}</Popup>
         </Marker>
       ))}
+
+      {/* Draw a polyline connecting the markers */}
+      {routeCoordinates.length > 0 && <Polyline positions={routeCoordinates} color="blue" />}
     </MapContainer>
   );
 }
