@@ -30,9 +30,9 @@ export default function RouteMap({ selectedRoute }) {
       const data = await response.json();
 
       if (data.features && data.features.length > 0) {
-        return data.features[0].center; // [longitude, latitude] (no reverse here)
+        return data.features[0].center; 
       }
-      return null; // No result found
+      return null; 
     };
 
     const fetchRoute = async (coordinates) => {
