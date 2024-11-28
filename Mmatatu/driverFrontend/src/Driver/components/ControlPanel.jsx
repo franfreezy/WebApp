@@ -10,7 +10,7 @@ export default function ControlPanel({ setSelectedRoute }) {
   const fetchFares = async () => {
     try {
       const response = await fetch(
-        "https://matatuback.onrender.com/backend/fares/"
+        "https://mmatatubackend.onrender.com/backend/fares/"
       );
       const data = await response.json();
       setFares(data.fares || []);
