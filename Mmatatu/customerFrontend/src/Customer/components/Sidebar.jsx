@@ -26,25 +26,25 @@ export default function Sidebar() {
           icon={<FaWallet />}
           label="View Balance"
           isCollapsed={isCollapsed}
-          href="/customer"
+          href="/dashboard"
         />
         <NavItem
           icon={<FaBus />}
           label="Track Buses"
           isCollapsed={isCollapsed}
-          href="/track"
+          href="/dashboard/track"
         />
         <NavItem
           icon={<FaBell />}
           label="Notifications"
           isCollapsed={isCollapsed}
-          href="/notifications"
+          href="/dashboard/notifications"
         />
         <NavItem
           icon={<FaUser />}
           label="Account Settings"
           isCollapsed={isCollapsed}
-          href="/account"
+          href="/dashboard/account"
         />
       </div>
     </div>

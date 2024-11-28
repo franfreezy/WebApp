@@ -1,20 +1,26 @@
-import dynamic from "next/dynamic";
+import { useEffect, useRef } from "react";
+import mapboxgl from "mapbox-gl";
 
-const Map = dynamic(() => import("react-map-gl"), { ssr: false });
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
 export default function BusMap() {
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+
+  useEffect(() => {
+    if (map.current) return; // If the map is already initialized, do nothing
+
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current, // Container for the map
+      style: "mapbox://styles/mapbox/streets-v11", // Map style
+      center: [36.8219, -1.2921], // Longitude, Latitude
+      zoom: 12, // Initial zoom level
+    });
+  }, []);
+
   return (
-    <div className="h-96">
-      <Map
-        initialViewState={{
-          longitude: 36.8219,
-          latitude: -1.2921,
-          zoom: 12,
-        }}
-        style={{ width: "100%", height: "100%" }}
-        mapStyle="mapbox://styles/mapbox/streets-v11"
-        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-      />
+    <div className="relative w-full h-[calc(100vh-72px)] overflow-hidden">
+      <div ref={mapContainer} className="absolute top-0 left-0 w-full h-full" />
     </div>
   );
 }
