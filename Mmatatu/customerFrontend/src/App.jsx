@@ -6,6 +6,7 @@ import CustomerDashboard from "./Customer/page";
 import Dash from "./Customer/components/dashboard";
 import BusMap from "./Customer/components/BusMap";
 import NotificationsDashboard from "./Customer/components/notifications";
+import AccountSettings from "./Customer/components/accounts";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             path="/dashboard/notifications"
             element={<NotificationsDashboard />}
           />
+          <Route path="/dashboard/account" element={<AccountSettings />} />
         </Route>
 
         <Route
