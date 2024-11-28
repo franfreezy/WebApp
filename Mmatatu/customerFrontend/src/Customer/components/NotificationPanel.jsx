@@ -41,7 +41,7 @@ const NotificationsDashboard = () => {
   };
 
   return (
-    <div className="bg-white text-gray-800 shadow-md rounded-lg p-4 w-96">
+    <div className="bg-white text-gray-800 shadow-md rounded-lg p-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold flex items-center">
           <Bell className="mr-2" /> Notifications
@@ -85,7 +85,7 @@ const NotificationsDashboard = () => {
 
       <div className="mt-4 text-center">
         <button className="text-sm text-blue-600 hover:underline">
-          View all notifications
+          <a href="/dashboard/notifications">View all notifications</a>
         </button>
       </div>
     </div>
