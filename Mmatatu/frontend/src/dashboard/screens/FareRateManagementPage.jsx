@@ -33,7 +33,7 @@ const FareRateManagementPage = () => {
   useEffect(() => {
     const fetchRoutes = async () => {
       try {
-        const response = await axios.get("https://matatuback.onrender.com/backend/fares/");
+        const response = await axios.get("https://mmatatubackend.onrender.com/backend/fares/");
         const fetchedRoutes = response.data.fares.map((fare) => ({
           route_id: fare.route_id, 
           route_start: fare.route_start,
@@ -64,7 +64,7 @@ const FareRateManagementPage = () => {
   // Handle updating fare rate
   const updateFareRate = async () => {
     try {
-      await axios.put(`https://matatuback.onrender.com/backend/fares/update/${selectedRouteId}/`, {
+      await axios.put(`https://mmatatubackend.onrender.com/backend/fares/update/${selectedRouteId}/`, {
         Rate: newFareRate.fareRate,
         updated_at: newFareRate.effectiveDate,
       });
@@ -91,7 +91,7 @@ const FareRateManagementPage = () => {
     try {
       const newRouteId = generateRandomRouteId(); // Generate a random route_id
 
-      await axios.post("https://matatuback.onrender.com/backend/fares/", {
+      await axios.post("https://mmatatubackend.onrender.com/backend/fares/", {
         route_start: newEntry.route_start,
         route_end: newEntry.route_end,
         Rate: newEntry.fareRate,

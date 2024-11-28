@@ -11,9 +11,9 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
-    'https://mmatatu.onrender.com',
-    'https://webapp-slj7.onrender.com',
-    'https://passenger-ckz9.onrender.com'
+    'https://adminmmatatu.onrender.com',
+    'https://customerdasshboard.onrender.com',
+    'https://driverdashboard.onrender.com'
 ]
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -123,10 +123,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    'https://mmatatu.onrender.com',
+    
     'http://localhost:5173',
-    'https://webapp-slj7.onrender.com',
-    'https://passenger-ckz9.onrender.com'
+    'https://adminmmatatu.onrender.com',
+    'https://customerdasshboard.onrender.com',
+    'https://driverdashboard.onrender.com'
 ]
 CORS_ALLOW_METHODS = [
     "GET",
