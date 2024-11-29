@@ -6,8 +6,7 @@ from rest_framework.response import Response
 from rest_framework import status
 import json
 from rest_framework.views import APIView
-# from Backend.models import smoke,batt,temperature,soilph,soilprecipitation
-from backend.models import coordinatesArd,Passenger
+from backend.models import coordinatesArd,passenger, Payment
 from django.views.decorators.csrf import csrf_exempt
 
 @permission_classes([AllowAny])
@@ -165,3 +164,50 @@ class gsmcoords(APIView):
 
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
+
+@csrf_exempt  # If you're testing without a CSRF token, but avoid in production
+def stk_push(request):
+    if request.method == "POST":
+        email = request.POST.get("email", "").strip()
+        phone_number = request.POST.get("phone_number", "").strip()
+        amount = request.POST.get("amount", "").strip()
+
+        # Validate input
+        if not email or not phone_number or not amount:
+            return JsonResponse({"error": "Email, phone number, and amount are required."}, status=400)
+
+        # Check if the user and passenger exist
+        try:
+            user = User.objects.get(email=email)
+            passenger = user.passenger  # Access the related Passenger model
+        except User.DoesNotExist:
+            return JsonResponse({"error": "User with this email does not exist."}, status=404)
+        except Passenger.DoesNotExist:
+            return JsonResponse({"error": "Passenger profile not found for this user."}, status=404)
+
+        # Validate phone number format (basic check, customize as needed)
+        if not phone_number.isdigit() or len(phone_number) < 10:
+            return JsonResponse({"error": "Invalid phone number format."}, status=400)
+
+        # Call the STK Push API
+        stk_response = initiate_stk_push(phone_number, float(amount))
+
+        if stk_response.get("success"):
+            return JsonResponse({
+                "message": "STK Push sent successfully!",
+                "response": stk_response
+            })
+        else:
+            return JsonResponse({"error": "Failed to initiate STK Push.", "details": stk_response}, status=500)
+
+    return JsonResponse({"error": "Invalid request method. Use POST."}, status=400)
+
+def initiate_stk_push(phone_number, amount):
+    cl = MpesaClient()
+    phone_number = phone_number
+    amount = amount
+    account_reference = 'reference'
+    transaction_desc = 'Description'
+    callback_url = 'https://api.darajambili.com/express-payment'
+    response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
+    return HttpResponse(response)

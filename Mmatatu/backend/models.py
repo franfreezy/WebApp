@@ -22,12 +22,12 @@ class passenger(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='passenger')
     first_name = models.CharField()
     last_name = models.CharField()
-    phone number  =  models.CharField(max_length=15)
+    phone_number  =  models.CharField(max_length=15)
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.user.email})"
 
 class Payment(models.Model):
-    passenger = models.OneToOneField(Passenger, on_delete=models.CASCADE, related_name='payment')
+    passenger = models.OneToOneField(passenger, on_delete=models.CASCADE, related_name='payment')
     amount = models.FloatField()
 
     def __str__(self):
