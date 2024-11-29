@@ -10,11 +10,18 @@ class Coordinates(models.Model):
 class coordinatesArd(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
+    number=models.IntegerField()
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Lat: {self.latitude}, Long: {self.longitude}"
+        return f"Lat: {self.latitude}, Long: {self.longitude}, pass: {self.number}"
     
+class passenger(models.Model):
+    first_name = models.CharField()
+    last_name = models.CharField()
+    phone number  =  models.CharField(max_length=15)
+    
+        
 class Fare(models.Model):
     route_id = models.CharField()
     route_start = models.CharField()
