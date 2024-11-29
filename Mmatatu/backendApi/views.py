@@ -7,12 +7,50 @@ from rest_framework import status
 import json
 from rest_framework.views import APIView
 # from Backend.models import smoke,batt,temperature,soilph,soilprecipitation
-from backend.models import coordinatesArd
+from backend.models import coordinatesArd,Passenger
 from django.views.decorators.csrf import csrf_exempt
 
+@permission_classes([AllowAny])
+def add_passenger(request):
+    if request.method == "POST":
+        full_name = request.POST.get("full_name", "").strip()
+        phone_number = request.POST.get("phone_number", "").strip()
+        email = request.POST.get("email", "").strip()
 
-def homepage(request):
-    return HttpResponse("Mmatatu Backend Apis!")
+        # Validate input
+        if not full_name or not phone_number or not email:
+            return JsonResponse({"error": "Full name, phone number, and email are required."}, status=400)
+
+        # Split the full name into first and last names
+        name_parts = full_name.split()
+        first_name = name_parts[0]
+        last_name = " ".join(name_parts[1:]) if len(name_parts) > 1 else ""
+
+        # Get or create the user
+        user, created = User.objects.get_or_create(email=email, defaults={
+            
+            'first_name': first_name,
+            'last_name': last_name,
+        })
+
+        # Check if the user already has a passenger profile
+        if hasattr(user, 'passenger'):
+            return JsonResponse({"error": "This user already has a passenger profile."}, status=400)
+
+        # Create the passenger profile
+        passenger = Passenger.objects.create(
+            user=user,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number,
+        )
+
+        return JsonResponse({
+            "message": "Passenger added successfully!",
+            
+        })
+
+    return JsonResponse({"error": "Invalid request method. Use POST."}, status=400)
 
 
 @permission_classes([AllowAny])
